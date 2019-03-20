@@ -5,6 +5,9 @@
  */
 package statistiche;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 /**
  *
  * @author sipione_christian
@@ -19,11 +22,15 @@ public class ThContaSpazi extends Thread {
 
     public void run() {
         for (int i = 0; i < ptrDati.getCaratteri(); i++) {
-            ptrDati.waitSem2();
-            if (ptrDati.getV(i).equals(" ")) {
-                ptrDati.setNumSpaziLetti();
+            try {
+                ptrDati.waitSem3();
+                if (ptrDati.getV(i).equals(" ")) {
+                    ptrDati.setNumSpaziLetti();
+                }
+                ptrDati.signalSem4();
+            } catch (InterruptedException ex) {
+                Logger.getLogger(ThContaSpazi.class.getName()).log(Level.SEVERE, null, ex);
             }
-            ptrDati.signalSem3();
            
         }
     }

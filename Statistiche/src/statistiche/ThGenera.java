@@ -6,6 +6,8 @@
 package statistiche;
 
 import java.util.Random;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -24,18 +26,22 @@ public class ThGenera extends Thread {
 
     public void run() {
         for (int i = 0; i < ptrDati.getCaratteri(); i++) {
-            ptrDati.waitSem1();
-            char lettera = abc.charAt(rnd.nextInt(abc.length()));
-            if (lettera == '.') {
-                ptrDati.setNumPuntiInseriti();
+            try {
+                ptrDati.waitSem1();
+                char lettera = abc.charAt(rnd.nextInt(abc.length()));
+                if (lettera == '.') {
+                    ptrDati.setNumPuntiInseriti();
+                }
+                if (lettera == ' ') {
+                    ptrDati.setNumSpaziInseriti();
+                }
+                String l = String.valueOf(lettera);
+                ptrDati.setV(l);
+                ptrDati.setCaratteriInseriti();
+                ptrDati.signalSem2();
+            } catch (InterruptedException ex) {
+                Logger.getLogger(ThGenera.class.getName()).log(Level.SEVERE, null, ex);
             }
-            if (lettera == ' ') {
-                ptrDati.setNumSpaziInseriti();
-            }
-            String l = String.valueOf(lettera);
-            ptrDati.setV(l);
-            ptrDati.setCaratteriInseriti();
-            ptrDati.signalSem2();
         }
     }
 }

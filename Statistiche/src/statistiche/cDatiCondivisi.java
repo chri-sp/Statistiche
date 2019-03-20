@@ -14,16 +14,16 @@ public class cDatiCondivisi {
     private Semaphore sem1;
     private Semaphore sem2;
     private Semaphore sem3;
-    private Semaphore sincVisualizza1;
-    private Semaphore sincVisualizza2;
+    private Semaphore sem4;
+    private Semaphore semJoin;
     private Vector<String> v = new Vector<String>();
 
     public cDatiCondivisi() {
         sem1 = new Semaphore(1);
         sem2 = new Semaphore(0);
         sem3 = new Semaphore(0);
-        sincVisualizza1 = new Semaphore(0);
-        sincVisualizza2 = new Semaphore(1);
+        sem4 = new Semaphore(0);
+        semJoin = new Semaphore(0);
         this.caratteri = 0;
         this.caratteriInseriti = 0;
         this.numSpaziLetti = 0;
@@ -112,12 +112,20 @@ public class cDatiCondivisi {
     public void signalSem3() {
         sem3.release();
     }
-      public void waitsincVisualizza1() throws InterruptedException {
-        sincVisualizza1.acquire();
+     public void waitSem4() throws InterruptedException {
+        sem4.acquire();
     }
 
-    public void signalsincVisualizza1() {
-        sincVisualizza1.release();
+    public void signalSem4() {
+        sem4.release();
+    }
+
+    public void waitSemJoin() throws InterruptedException {
+        semJoin.acquire();
+    }
+
+    public void signalSemJoin() {
+        semJoin.release();
     }
 
 }

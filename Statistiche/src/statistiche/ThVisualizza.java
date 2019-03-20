@@ -5,6 +5,9 @@
  */
 package statistiche;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 /**
  *
  * @author sipione_christian
@@ -19,11 +22,18 @@ public class ThVisualizza extends Thread {
 
     public void run() {
         for (int i = 0; i < ptrDati.getCaratteri(); i++) {
-            System.out.println("buffer: " + ptrDati.getV(i));
-            System.out.println("spazi inseriti: " + ptrDati.getNumSpaziInseriti());
-            System.out.println("spazi letti: " + ptrDati.getNumSpaziLetti());
-            System.out.println("punti inseriti: " + ptrDati.getNumPuntiInseriti());
-            System.out.println("punti letti: " + ptrDati.getNumPuntiLetti());
+            try {
+                ptrDati.waitSem4();
+                System.out.println("buffer: " + ptrDati.getV(i));
+                System.out.println("spazi inseriti: " + ptrDati.getNumSpaziInseriti());
+                System.out.println("spazi letti: " + ptrDati.getNumSpaziLetti());
+                System.out.println("punti inseriti: " + ptrDati.getNumPuntiInseriti());
+                System.out.println("punti letti: " + ptrDati.getNumPuntiLetti());
+                ptrDati.signalSem1();
+            } catch (InterruptedException ex) {
+                Logger.getLogger(ThVisualizza.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
+        ptrDati.signalSemJoin();
     }
 }
